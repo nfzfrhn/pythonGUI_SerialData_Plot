@@ -1,12 +1,18 @@
 '''
-@ author: summer
-@ tools: pycharm 
+@ author: Nafiz
+@ tools : Visual Studio Code
 @ content: Implement Serial Communication Main Class
-@ date: 2020.2.12
+@ date: 2022.5.24
 '''
 import tkinter
 from tkinter import ttk
 from SerialClassComm import SerialAchieve   # Import Serial Communication Class
+
+import matplotlib
+matplotlib.use('TkAgg')
+
+from matplotlib.figure import Figure
+from matplotlib.backends.backend_tkagg import (FigureCanvasTkAgg, NavigationToolbar2Tk)
 
 class MainSerial:
     def __init__(self):
@@ -24,8 +30,38 @@ class MainSerial:
         self.mainwin.geometry("1200x800")
         #self.mainwin.resizable(True,True)
 
+        # prepare data
+        data = {
+            'Python': 11.27,
+            'C': 11.16,
+            'Java': 10.46,
+            'C++': 7.5,
+            'C#': 5.26
+        }
+        languages = data.keys()
+        popularity = data.values()
+
+        # Create a figure to holds the chart
+        figura = Figure(figsize=(2,4), dpi=100)
+
+        # Create FigureCanvasTkAgg object that connects the figure object with a Tkinter's canvas object
+        figure_canvas = FigureCanvasTkAgg(figura, self.mainwin)
+
+        # Create a matplotlib's built-in toolbar
+        NavigationToolbar2Tk(figure_canvas, self.mainwin)
+
+        # Create axes
+        axes = figura.add_subplot()
+
+        # Create the barchart
+        axes.bar(languages, popularity)
+        axes.set_title('Top 5 Programming language')
+        axes.set_ylabel('Popularity')
+        
+        #figure_canvas.get_tk_widget().pack()
+
         # Label
-        self.label1 = tkinter.Label(self.mainwin,text = "Serial slogan:",font = ("Helvetica",15))
+        self.label1 = tkinter.Label(self.mainwin,text = "Port Number:",font = ("Helvetica",15))
         self.label1.place(x=5,y = 5)
         self.label2 = tkinter.Label(self.mainwin, text="Baud rate:", font=("Song Style", 15))
         self.label2.place(x=5, y=45)
@@ -50,7 +86,7 @@ class MainSerial:
         # Enter Selection
         self.combobox_port["value"] = [""]  # Select here first
 
-        self.combobox_port.place(x = 105,y = 5)  # display
+        self.combobox_port.place(x = 130,y = 5)  # display
 
         # baud rate
         self.bandvalue = tkinter.StringVar()  # The text that comes with the form, creating a value
@@ -58,7 +94,7 @@ class MainSerial:
         # Enter Selection
         self.combobox_band["value"] = ["4800","9600","14400","19200","38400","57600","115200"]  # Select here first
         self.combobox_band.current(6)  # Select 0 by default
-        self.combobox_band.place(x=105, y=45)  # display
+        self.combobox_band.place(x=130, y=45)  # display
 
         # Check bits
         self.checkvalue = tkinter.StringVar()  # The text that comes with the form, creating a value
@@ -66,7 +102,7 @@ class MainSerial:
         # Enter Selection
         self.combobox_check["value"] = ["No Check Bit"]  # Select here first
         self.combobox_check.current(0)  # Select 0 by default
-        self.combobox_check.place(x=105, y=85)  # display
+        self.combobox_check.place(x=130, y=85)  # display
 
         # Data bits
         self.datavalue = tkinter.StringVar()  # The text that comes with the form, creating a value
@@ -74,7 +110,7 @@ class MainSerial:
         # Enter Selection
         self.combobox_data["value"] = ["8", "9", "0"]  # Select here first
         self.combobox_data.current(0)  # Select 0 by default
-        self.combobox_data.place(x=105, y=125)  # display
+        self.combobox_data.place(x=130, y=125)  # display
 
         # Stop Bit
         self.stopvalue = tkinter.StringVar()  # The text that comes with the form, creating a value
@@ -82,7 +118,7 @@ class MainSerial:
         # Enter Selection
         self.combobox_stop["value"] = ["1", "0"]  # Select here first
         self.combobox_stop.current(0)  # Select 0 by default
-        self.combobox_stop.place(x=105, y=165)  # display
+        self.combobox_stop.place(x=130, y=165)  # display
 
         # Key display, open serial port
         self.button_OK = tkinter.Button(self.mainwin, text="Open Serial Port",
@@ -105,7 +141,7 @@ class MainSerial:
         self.button_Cancel = tkinter.Button(self.mainwin, text="Clear Received Data",  # Display Text
                                             command=self.button_clcRece_click, font=("Song Style", 13),
                                             width=13, height=1)
-        self.button_Cancel.place(x=400, y=300)  # Display Control
+        self.button_Cancel.place(x=400, y=350)  # Display Control
 
         # Send keys
         self.button_Send = tkinter.Button(self.mainwin, text="Send out",  # Display Text
@@ -123,21 +159,21 @@ class MainSerial:
         # Implement Notepad's functional components
         self.SendDataView = tkinter.Text(self.mainwin,width = 40,height = 9,
                                          font = ("Song Style",13))  # Text is actually a text editor
-        self.SendDataView.place(x = 230,y = 35)  # display
+        self.SendDataView.place(x = 400,y = 50)  # display
 
         self.ReceDataView = tkinter.Text(self.mainwin, width=40, height=9,
                                          font=("Song Style", 13))  # Text is actually a text editor
-        self.ReceDataView.place(x=230, y=230)  # display
+        self.ReceDataView.place(x=400, y=400)  # display
 
         # Sent Content
         test_str = tkinter.StringVar(value="Hello")
         self.entrySend = tkinter.Entry(self.mainwin, width=13,textvariable = test_str,font = ("Song Style",15))
-        self.entrySend.place(x = 80,y = 260)  # display
+        self.entrySend.place(x = 120,y = 260)  # display
 
         # Get File Path
         test_str = tkinter.StringVar(value="Hello")
         self.entrySend = tkinter.Entry(self.mainwin, width=13, textvariable=test_str, font=("Song Style", 15))
-        self.entrySend.place(x=80, y=260)  # display
+        self.entrySend.place(x=120, y=260)  # display
 
         # Get the parameters of the interface
         self.band = self.combobox_band.get()
@@ -200,6 +236,7 @@ class MainSerial:
             self.ReceDataView.insert(tkinter.INSERT, readstr + " ")
         except:
             print("read failure")
+
 if __name__ == '__main__':
     my_ser1 = MainSerial()
     my_ser1.show()

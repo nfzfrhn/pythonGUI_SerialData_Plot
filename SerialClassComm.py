@@ -4,6 +4,8 @@
 @ content: 串口通讯实现类
 @ date: 2020.2.12
 '''
+# This is used together with PythonGUI2_v1.py
+
 import serial
 import serial.tools.list_ports
 
